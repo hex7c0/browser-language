@@ -1,28 +1,31 @@
-logger-request [![Build Status](https://travis-ci.org/hex7c0/logger-request.svg?branch=master)](https://travis-ci.org/hex7c0/logger-request) [![NPM version](https://badge.fury.io/js/logger-request.svg)](http://badge.fury.io/js/logger-request)
+browser-language [![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language) [![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
 ==============
 
-simple logger middleware for express
+simple language middleware for express
 
 ## API
 
 ```js
 var app = require('express')();
-var logger-request = require('logger-request');
+var cookie = require('cookie-parser');
+var browser-language = require('browser-language');
 
-app.use(logger-request({filename:'pippo.log'}));
+app.use(cookie('pippo'));
+app.use(browser-language({_default:'en',en:'en'}));
 ```
 
-### logger-request(options)
+### browser-language(options)
 
 Setup session store with the given `options`.
 
 #### Options
 
-  - `filename` - The filename of the logfile to write output to.
-  - `maxsize` - Max size in bytes of the logfile, if the size is exceeded then a new file is created.
-  - `json` - If true, messages will be logged as JSON (default true).
+  - `_default` - The dafault value, if request from client cannot be evaluated
+  - `en` - Set cookie with 'en' value
+  - `it` - Set cookie with 'it' value
+  - `..` - Set cookie with '..' value
 
-releated to https://github.com/flatiron/winston#file-transport
+set object with correct value to be added
 
 ## License
 Copyright (c) 2014 hex7c0
