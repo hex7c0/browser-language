@@ -1,0 +1,35 @@
+{
+  "name": "browser-language",
+  "version": "0.0.1",
+  "description": "simple language middleware for express",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hex7c0/browser-language.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hex7c0/browser-language/issues"
+  },
+  "author": {
+    "name": "hex7c0",
+   "email": "0x7c0@teboss.tk",
+    "url": "http://hex7c0.tk/"
+  },
+  "dependencies": {
+    "cookie-parser": "1.1.0"
+  },
+  "devDependencies":{
+    "express": ">=4.0.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "keywords": [
+    "browser",
+    "language",
+    "cookie",
+    "express"
+  ],
+  "license": "GPLv3",
+  "homepage": "https://github.com/hex7c0/browser-language"
+}
