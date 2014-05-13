@@ -14,9 +14,9 @@ app.use(cookie('pippo'));
 app.use(browser-language({_default:'en',en:'en'}));
 ```
 
-### browser-language(options)
+### browser-language(dictionary)
 
-Setup session store with the given `options`.
+Setup accepted languages with the given `dictionary` (object).
 
 #### Options
 
@@ -25,7 +25,11 @@ Setup session store with the given `options`.
   - `it` - Set cookie with 'it' value
   - `..` - Set cookie with '..' value
 
-set object with correct value to be added
+object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
+
+#### Examples
+
+Take a look at my [examples](https://github.com/hex7c0/browser-language/tree/master/examples)
 
 ## License
 Copyright (c) 2014 hex7c0
