@@ -4,7 +4,7 @@
  * 
  * @package browser-language
  * @subpackage index
- * @version 0.0.1
+ * @version 1.0.0
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -115,12 +115,17 @@ function language(dictionary) {
     /**
      * setting options
      * 
-     * @param string filename: name of log
-     * @param integer maxsize: max size of log
-     * @param bollean json: if write data with json format
+     * @param object dictionary: accepted languages
      */
 
     var LANG = dictionary || require('./lib/dictionary.js').LANG;
+    if (dictionary._default == undefined) {
+        // force
+        var LANG = require('./lib/dictionary.js').LANG;
+    } else if (!languageAll[dictionary._default]) {
+        console.error('language misconfigured');
+        var LANG = require('./lib/dictionary.js').LANG;
+    }
     process.env.LANG = LANG._default;
 
     return function detection(req, res, next) {
