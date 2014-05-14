@@ -116,6 +116,7 @@ function language(dictionary) {
      * setting options
      * 
      * @param object dictionary: accepted languages
+     * @return function
      */
 
     var LANG = dictionary || require('./lib/dictionary.js').LANG;
@@ -136,6 +137,7 @@ function language(dictionary) {
          * @param object req: request
          * @param object res: response
          * @param object next: continue routes
+         * @return function
          */
 
         var year = 3600 * 24 * 30 * 365;
@@ -174,7 +176,7 @@ function language(dictionary) {
             req.cookies.lang = LANG._default;
         }
 
-        next();
+        return next();
     };
 };
 

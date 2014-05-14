@@ -1,7 +1,7 @@
 browser-language [![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language) [![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
 ==============
 
-simple language middleware for express
+grab browser language for [expressjs](http://expressjs.com/)
 
 ## API
 
