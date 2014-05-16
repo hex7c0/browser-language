@@ -4,7 +4,7 @@
  * 
  * @package browser-language
  * @subpackage index
- * @version 1.0.0
+ * @version 1.0.1
  * @author hex7c0 <0x7c0@teboss.tk>
  * @license GPLv3
  * @overview main module
@@ -12,6 +12,7 @@
  */
 
 var done = false;
+var year = 3600 * 24 * 30 * 365;
 var languageAll = {
     'ab' : 'Abkhazian',
     'af' : 'Afrikaans',
@@ -111,25 +112,30 @@ var languageAll = {
     'zh' : 'Chinese'
 };
 
-function language(dictionary) {
+function language(dictionary, cookie) {
     /**
      * setting options
      * 
      * @param object dictionary: accepted languages
+     * @param string cookie: name of cookie
      * @return function
      */
 
-    var LANG = dictionary || require('./lib/dictionary.js').LANG;
-    if (dictionary._default == undefined) {
+    var cookie = cookie || 'lang';
+    var LANG = dictionary || require(__dirname + '/lib/dictionary.js').LANG;
+
+    if (LANG._default == undefined) {
         // force
-        var LANG = require('./lib/dictionary.js').LANG;
-    } else if (!languageAll[dictionary._default]) {
+        LANG = require(__dirname + '/lib/dictionary.js').LANG;
+    } else if (!languageAll[LANG._default]) {
         console.error('language misconfigured');
-        var LANG = require('./lib/dictionary.js').LANG;
+        LANG = require(__dirname + '/lib/dictionary.js').LANG;
     }
+
     process.env.LANG = LANG._default;
 
     return function detection(req, res, next) {
+        console.log(cookie)
         /**
          * Detect language and (if accepted) build it. Store information on
          * cookie
@@ -139,9 +145,8 @@ function language(dictionary) {
          * @param object next: continue routes
          * @return function
          */
-
-        var year = 3600 * 24 * 30 * 365;
-        if (req.cookies.lang == undefined) {
+        console.log(req.cookies[cookie])
+        if (req.cookies[cookie] == undefined) {
             // not already set
             if (res._headers == undefined) {
                 // send only one cookie
@@ -153,27 +158,27 @@ function language(dictionary) {
                     for (var i = 0; i < languagesTyp.length; i++) {
                         var language = languagesTyp[i].substring(0, 2);
                         if (LANG[language]) {
-                            res.cookie('lang', language, {
+                            res.cookie(cookie, language, {
                                 maxAge : year
                             });
-                            req.cookies.lang = language;
+                            req.cookies[cookie] = language;
                             done = true;
                             break;
                         }
                     }
                 }
             }
-        } else if (LANG[req.cookies.lang]) {
+        } else if (LANG[req.cookies[cookie]]) {
             // check right cookie
             done = true;
         }
 
         if (done == false) {
             // reset
-            res.cookie('lang', LANG._default, {
+            res.cookie(cookie, LANG._default, {
                 maxAge : year
             });
-            req.cookies.lang = LANG._default;
+            req.cookies[cookie] = LANG._default;
         }
 
         return next();

@@ -16,15 +16,15 @@
 try {
     var app = require('express')();
     var cookie = require('cookie-parser');
-    var language = require('../index.js');
+    var language = require('../index.js'); // use 'browser-language' instead
+    app.use(cookie('pippo'));
 } catch (MODULE_NOT_FOUND) {
     console.log(MODULE_NOT_FOUND);
     process.exit(1);
 }
 
-app.use(cookie('pippo'));
 // using middleware
-app.use(language())
+app.use(language({}, 'new_cookie_name'))
 
 // express routing
 app.get('/', function(req, res) {

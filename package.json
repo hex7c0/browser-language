@@ -1,7 +1,7 @@
 {
   "name": "browser-language",
-  "version": "1.0.0",
-  "description": "simple language middleware for express",
+  "version": "1.0.1",
+  "description": "grab browser language for expressjs",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
   },
   "author": {
     "name": "hex7c0",
-   "email": "0x7c0@teboss.tk",
+    "email": "0x7c0@teboss.tk",
     "url": "http://hex7c0.tk/"
   },
   "dependencies": {
