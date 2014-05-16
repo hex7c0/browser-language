@@ -9,23 +9,32 @@ grab browser language for [expressjs](http://expressjs.com/)
 var app = require('express')();
 var cookie = require('cookie-parser');
 var browser-language = require('browser-language');
-
 app.use(cookie('pippo'));
-app.use(browser-language({_default:'en',en:'en'}));
+
+app.use(browser - language({
+    dictionary : {
+        _default : 'en',
+        en : 'en',
+    },
+    cookie : 'new_cookie_name',
+}));
 ```
 
-### browser-language(dictionary)
+### browser-language(options)
 
-Setup accepted languages with the given `dictionary` (object).
+Setup logger with the given `options` (object).
 
 #### Options
 
-  - `_default` - The dafault value, if request from client cannot be evaluated
-  - `en` - Set cookie with 'en' value
-  - `it` - Set cookie with 'it' value
-  - `..` - Set cookie with '..' value
+  - `dictionary` - Accepted language
+- - `_default` - The dafault value, if request from client cannot be evaluated
+- - `en` - Set cookie with 'en' value
+- - `it` - Set cookie with 'it' value
+- - `..` - Set cookie with '..' value
+  - `cookie` - name for cookie
+  - `age` - age for cookie
 
-object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
+`dictionary` object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
 
 #### Examples
 
