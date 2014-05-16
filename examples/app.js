@@ -24,7 +24,9 @@ try {
 }
 
 // using middleware
-app.use(language({}, 'new_cookie_name'))
+app.use(language({
+    cookie : 'new_cookie_name'
+}))
 
 // express routing
 app.get('/', function(req, res) {
