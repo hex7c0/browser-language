@@ -123,8 +123,8 @@ function language(options) {
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
     var LANG = options.dictionary || require(include).LANG;
-    options.age = parseInt(options.age) || 3600 * 1000 * 24 * 365;
     options.cookie = options.cookie || 'lang';
+    options.age = parseInt(options.age) || 3600 * 1000 * 24 * 365;
 
     if (LANG._default == undefined) {
         // force
