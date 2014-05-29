@@ -2,7 +2,7 @@
 ==================
 
   * New Cookie options
-  * Split beetween clear cookie and signed cookie
+  * Split between clear cookie and signed cookie
   * JsDoc improvement
 
 1.0.1 / 2014-05-16
