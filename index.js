@@ -2,7 +2,7 @@
 /**
  * @file browser-language main
  * @module browser-language
- * @version 1.0.2
+ * @version 1.0.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -250,9 +250,14 @@ function language(options) {
     }
     process.env.lang = lang._default;
     LANG = lang;
+
     if (Boolean(options.signed)) {
+        // remove obsolete
+        normal = languageAll = null;
         return signed;
     } else {
+        // remove obsolete
+        signed = languageAll = null;
         return normal;
     }
 
