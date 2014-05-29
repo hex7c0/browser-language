@@ -16,18 +16,34 @@ git clone git://github.com/hex7c0/browser-language.git
 
 ## API
 
+normal use inside expressjs project
 ```js
+var language = require('browser-language');
+var app = require('express')();
+
+app.use(language({
+    dictionary: {
+        _default: 'en',
+        en: 'en',
+    },
+    cookie: 'new_cookie_name',
+}));
+```
+
+signed use inside expressjs project
+```js
+var language = require('browser-language');
 var app = require('express')();
 var cookie = require('cookie-parser');
-var language = require('browser-language');
 app.use(cookie('foo'));
 
 app.use(language({
-    dictionary : {
-        _default : 'en',
-        en : 'en',
+    dictionary: {
+        _default: 'en',
+        en: 'en',
     },
-    cookie : 'new_cookie_name',
+    cookie: 'new_cookie_name',
+    signed: true,
 }));
 ```
 
@@ -35,13 +51,18 @@ app.use(language({
 
 #### Options
 
-  - `dictionary` - Accepted language
-- - `_default` - The dafault value, if request from client cannot be evaluated
-- - `en` - Set cookie with 'en' value
-- - `it` - Set cookie with 'it' value
-- - `..` - Set cookie with '..' value
-  - `cookie` - name for cookie
-  - `age` - age for cookie
+ - `dictionary` - **Object** Accepted language
+  - `_default` - **String** The dafault value, if request from client cannot be evaluated
+  - `en` - **String** Set cookie with 'en' value
+  - `it` - **String** Set cookie with 'it' value
+  - `..` - **String** Set cookie with '..' value
+ - `domain` - **String** Domain of cookie
+ - `cookie` - **String** Name of cookie
+ - `path` - **String** Path of cookie
+ - `age` - **Integer** Age of cookie
+ - `httpOnly - **Boolean** Flag for http only
+ - `secure - **Boolean** Flag for using https
+ - `signed - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value
 
 `dictionary` object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
 
