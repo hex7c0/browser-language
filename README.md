@@ -16,7 +16,7 @@ git clone git://github.com/hex7c0/browser-language.git
 
 ## API
 
-normal use inside expressjs project
+_Clear_ use inside expressjs project
 ```js
 var language = require('browser-language');
 var app = require('express')();
@@ -30,13 +30,13 @@ app.use(language({
 }));
 ```
 
-signed use inside expressjs project
+_Signed_ use inside expressjs project
 ```js
 var language = require('browser-language');
 var app = require('express')();
 var cookie = require('cookie-parser');
-app.use(cookie('foo'));
 
+app.use(cookie('foo'));
 app.use(language({
     dictionary: {
         _default: 'en',
@@ -60,9 +60,9 @@ app.use(language({
  - `cookie` - **String** Name of cookie
  - `path` - **String** Path of cookie
  - `age` - **Integer** Age of cookie
- - `httpOnly - **Boolean** Flag for http only
- - `secure - **Boolean** Flag for using https
- - `signed - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value
+ - `httpOnly` - **Boolean** Flag for http only
+ - `secure` - **Boolean** Flag for using https
+ - `signed` - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value
 
 `dictionary` object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
 
