@@ -2,13 +2,17 @@
 /**
  * @file browser-language main
  * @module browser-language
- * @version 1.0.3
+ * @package browser-language
+ * @subpackage main
+ * @version 1.0.4
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
  */
 
-// variables
+/*
+ * initialize module
+ */
 /**
  * @global
  */
@@ -111,10 +115,13 @@ var my = {}, LANG = {}, languageAll = {
     'zh': 'Chinese'
 };
 
+/*
+ * functions
+ */
 /**
  * set language to cookie
  * 
- * @function normal
+ * @function set
  * @param {Object} res - response to client
  * @param {String} lang - string for cookie
  * @param {Boolean} signed - if cookie'll be signed
@@ -131,7 +138,6 @@ function set(res,lang,signed) {
         signed: signed,
     });
     return;
-
 }
 /**
  * detect language and (if accepted) build it. Store information on normal cookie
@@ -148,34 +154,25 @@ function normal(req,res,next) {
     if (req.cookies == undefined) {
         req.cookies = {};
     }
-    if (req.cookies[my.cookie] == undefined) {
-        // send only one cookie
-        if (req.headers['accept-language']) {
-            // fix with benchmark script
-            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
-                    ';');
-            for (var i = 0, il = languagesTyp.length; i < il; i++) {
-                var language = languagesTyp[i].substring(0,2);
-                if (LANG[language]) {
-                    set(res,language,false);
-                    req.cookies[my.cookie] = language;
-                    done = true;
-                    break;
-                }
+    if (req.headers['accept-language'] && req.cookies[my.cookie] == undefined) { // check
+        var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+        for (var i = 0, il = languagesTyp.length; i < il; i++) {
+            var language = languagesTyp[i].substring(0,2);
+            if (LANG[language]) {
+                set(res,language,false);
+                req.cookies[my.cookie] = language;
+                done = true;
+                break;
             }
         }
-    } else if (LANG[req.cookies[my.cookie]]) {
-        // check right cookie
+    } else if (LANG[req.cookies[my.cookie]]) { // lookup
         done = true;
     }
-
-    if (done == false) {
-        // reset
+    if (done == false) { // reset
         set(res,LANG._default,false);
         req.cookies[my.cookie] = LANG._default;
     }
     return next();
-
 }
 /**
  * detect language and (if accepted) build it. Store information on signed cookie
@@ -192,43 +189,36 @@ function signed(req,res,next) {
     if (req.signedCookies == undefined) {
         req.signedCookies = {};
     }
-    if (req.signedCookies[my.cookie] == undefined) {
-        // send only one cookie
-        if (req.headers['accept-language']) {
-            // fix with benchmark script
-            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
-                    ';');
-            for (var i = 0, il = languagesTyp.length; i < il; i++) {
-                var language = languagesTyp[i].substring(0,2);
-                if (LANG[language]) {
-                    set(res,language,true);
-                    req.signedCookies[my.cookie] = language;
-                    done = true;
-                    break;
-                }
+    if (req.headers['accept-language'] && req.signedCookies[my.cookie] == undefined) {// check
+        var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+        for (var i = 0, il = languagesTyp.length; i < il; i++) {
+            var language = languagesTyp[i].substring(0,2);
+            if (LANG[language]) {
+                set(res,language,true);
+                req.signedCookies[my.cookie] = language;
+                done = true;
+                break;
             }
         }
-    } else if (LANG[req.signedCookies[my.cookie]]) {
-        // check right cookie
+    } else if (LANG[req.signedCookies[my.cookie]]) { // lookup
         done = true;
     }
 
-    if (done == false) {
-        // reset
+    if (done == false) {// reset
         set(res,LANG._default,true);
         req.signedCookies[my.cookie] = LANG._default;
     }
     return next();
-
 }
 /**
  * setting options
  * 
- * @function language
+ * @exports main
+ * @function main
  * @param {Object} options: various options. check README.md
  * @return {function}
  */
-function language(options) {
+module.exports = function main(options) {
 
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
@@ -242,7 +232,6 @@ function language(options) {
         secure: Boolean(options.secure),
     }
     if (lang._default == undefined) {
-        // force
         lang = require(include).LANG;
     } else if (!languageAll[lang._default]) {
         console.error('language misconfigured');
@@ -260,12 +249,4 @@ function language(options) {
         signed = languageAll = null;
         return normal;
     }
-
 };
-
-/**
- * exports function
- * 
- * @exports language
- */
-module.exports = language;

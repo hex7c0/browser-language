@@ -1,6 +1,6 @@
 {
   "name": "browser-language",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "grab browser language for expressjs",
   "main": "index.js",
   "repository": {
@@ -15,9 +15,10 @@
     "email": "0x7c0@gmail.com",
     "url": "http://hex7c0.tk/"
   },
+  "dependencies": {},
   "devDependencies":{
     "cookie-parser": "1.1.0",
-    "express": ">=4.0.0"
+    "express": ">4.0.0"
   },
   "engines": {
     "node": ">=0.8.0"
