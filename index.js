@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.0.4
+ * @version 1.0.5
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -12,9 +12,6 @@
 
 /*
  * initialize module
- */
-/**
- * @global
  */
 var my = {}, LANG = {}, languageAll = {
     'ab': 'Abkhazian',
@@ -125,7 +122,7 @@ var my = {}, LANG = {}, languageAll = {
  * @param {Object} res - response to client
  * @param {String} lang - string for cookie
  * @param {Boolean} signed - if cookie'll be signed
- * @return
+ * @return {String}
  */
 function set(res,lang,signed) {
 
@@ -137,7 +134,7 @@ function set(res,lang,signed) {
         secure: my.secure,
         signed: signed,
     });
-    return;
+    return lang;
 }
 /**
  * detect language and (if accepted) build it. Store information on normal cookie
@@ -150,28 +147,28 @@ function set(res,lang,signed) {
  */
 function normal(req,res,next) {
 
-    var done = false;
     if (req.cookies == undefined) {
         req.cookies = {};
+        /**
+         * @todo req.headers.cookie
+         */
     }
-    if (req.headers['accept-language'] && req.cookies[my.cookie] == undefined) { // check
-        var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-        for (var i = 0, il = languagesTyp.length; i < il; i++) {
-            var language = languagesTyp[i].substring(0,2);
-            if (LANG[language]) {
-                set(res,language,false);
-                req.cookies[my.cookie] = language;
-                done = true;
-                break;
+    if (req.cookies[my.cookie] == undefined) { // check
+        if (req.headers['accept-language']) {
+            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
+                    ';');
+            for (var i = 0, il = languagesTyp.length; i < il; i++) {
+                var language = languagesTyp[i].substring(0,2);
+                if (LANG[language]) {
+                    req.cookies[my.cookie] = set(res,language,false);;
+                    return next();
+                }
             }
         }
     } else if (LANG[req.cookies[my.cookie]]) { // lookup
-        done = true;
+        return next();
     }
-    if (done == false) { // reset
-        set(res,LANG._default,false);
-        req.cookies[my.cookie] = LANG._default;
-    }
+    req.cookies[my.cookie] = set(res,LANG._default,false);
     return next();
 }
 /**
@@ -185,29 +182,28 @@ function normal(req,res,next) {
  */
 function signed(req,res,next) {
 
-    var done = false;
     if (req.signedCookies == undefined) {
         req.signedCookies = {};
+        /**
+         * @todo req.headers.cookie
+         */
     }
-    if (req.headers['accept-language'] && req.signedCookies[my.cookie] == undefined) {// check
-        var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-        for (var i = 0, il = languagesTyp.length; i < il; i++) {
-            var language = languagesTyp[i].substring(0,2);
-            if (LANG[language]) {
-                set(res,language,true);
-                req.signedCookies[my.cookie] = language;
-                done = true;
-                break;
+    if (req.signedCookies[my.cookie] == undefined) { // check
+        if (req.headers['accept-language']) {
+            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
+                    ';');
+            for (var i = 0, il = languagesTyp.length; i < il; i++) {
+                var language = languagesTyp[i].substring(0,2);
+                if (LANG[language]) {
+                    req.signedCookies[my.cookie] = set(res,language,true);
+                    return next();
+                }
             }
         }
     } else if (LANG[req.signedCookies[my.cookie]]) { // lookup
-        done = true;
+        return next();
     }
-
-    if (done == false) {// reset
-        set(res,LANG._default,true);
-        req.signedCookies[my.cookie] = LANG._default;
-    }
+    req.signedCookies[my.cookie] = set(res,LANG._default,true);
     return next();
 }
 /**
@@ -216,9 +212,9 @@ function signed(req,res,next) {
  * @exports main
  * @function main
  * @param {Object} options: various options. check README.md
- * @return {function}
+ * @return {Function}
  */
-module.exports = function main(options) {
+var main = module.exports = function(options) {
 
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
@@ -227,7 +223,7 @@ module.exports = function main(options) {
         cookie: String(options.cookie || 'lang'),
         domain: options.domain || null,
         path: String(options.path || '/'),
-        age: parseInt(options.age) || 1000 * 3600 * 24 * 365,
+        age: Number(options.age) || 1000 * 3600 * 24 * 365,
         httpOnly: Boolean(options.httpOnly),
         secure: Boolean(options.secure),
     }
