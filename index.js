@@ -120,18 +120,19 @@ var my = {}, LANG = {}, languageAll = {
  * 
  * @function set
  * @param {Object} res - response to client
+ * @param {Object} opt - my configuration
  * @param {String} lang - string for cookie
  * @param {Boolean} signed - if cookie'll be signed
  * @return {String}
  */
-function set(res,lang,signed) {
+function set(res,opt,lang,signed) {
 
-    res.cookie(my.cookie,lang,{
-        domain: my.domain,
-        path: my.path,
-        maxAge: my.age,
-        httpOnly: my.httpOnly,
-        secure: my.secure,
+    res.cookie(opt.cookie,lang,{
+        domain: opt.domain,
+        path: opt.path,
+        maxAge: opt.age,
+        httpOnly: opt.httpOnly,
+        secure: opt.secure,
         signed: signed,
     });
     return lang;
@@ -147,6 +148,7 @@ function set(res,lang,signed) {
  */
 function normal(req,res,next) {
 
+    var lang = LANG; // cache
     if (req.cookies == undefined) {
         req.cookies = {};
         /**
@@ -159,16 +161,16 @@ function normal(req,res,next) {
                     ';');
             for (var i = 0, il = languagesTyp.length; i < il; i++) {
                 var language = languagesTyp[i].substring(0,2);
-                if (LANG[language]) {
-                    req.cookies[my.cookie] = set(res,language,false);;
+                if (lang[language]) {
+                    req.cookies[my.cookie] = set(res,my,language,false);
                     return next();
                 }
             }
         }
-    } else if (LANG[req.cookies[my.cookie]]) { // lookup
+    } else if (lang[req.cookies[my.cookie]]) { // lookup
         return next();
     }
-    req.cookies[my.cookie] = set(res,LANG._default,false);
+    req.cookies[my.cookie] = set(res,my,lang._default,false);
     return next();
 }
 /**
@@ -182,6 +184,7 @@ function normal(req,res,next) {
  */
 function signed(req,res,next) {
 
+    var lang = LANG; // cache
     if (req.signedCookies == undefined) {
         req.signedCookies = {};
         /**
@@ -194,16 +197,16 @@ function signed(req,res,next) {
                     ';');
             for (var i = 0, il = languagesTyp.length; i < il; i++) {
                 var language = languagesTyp[i].substring(0,2);
-                if (LANG[language]) {
-                    req.signedCookies[my.cookie] = set(res,language,true);
+                if (lang[language]) {
+                    req.signedCookies[my.cookie] = set(res,my,language,true);
                     return next();
                 }
             }
         }
-    } else if (LANG[req.signedCookies[my.cookie]]) { // lookup
+    } else if (lang[req.signedCookies[my.cookie]]) { // lookup
         return next();
     }
-    req.signedCookies[my.cookie] = set(res,LANG._default,true);
+    req.signedCookies[my.cookie] = set(res,my,lang._default,true);
     return next();
 }
 /**
@@ -219,6 +222,7 @@ var main = module.exports = function(options) {
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
     var lang = options.dictionary || require(include).LANG;
+
     my = {
         cookie: String(options.cookie || 'lang'),
         domain: options.domain || null,
@@ -233,6 +237,9 @@ var main = module.exports = function(options) {
         console.error('language misconfigured');
         lang = require(include).LANG;
     }
+    /**
+     * @global
+     */
     process.env.lang = lang._default;
     LANG = lang;
 
