@@ -1,6 +1,6 @@
 #browser-language [![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language) [![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
 
-grab browser language for [expressjs](http://expressjs.com/)
+grab browser language and store on cookie
 
 ## Installation
 
