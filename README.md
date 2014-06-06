@@ -58,17 +58,11 @@ app.use(language({
   - `..` - **String** Set cookie with '..' value
  
  - `domain` - **String** Domain of cookie *(default "null")*
- 
  - `cookie` - **String** Name of cookie *(default "lang")*
- 
  - `path` - **String** Path of cookie *(default "/")*
- 
  - `age` - **Number** Age of cookie in millisecond *(default "1 year")*
- 
  - `httpOnly` - **Boolean** Flag for http only cookie *(default "false")*
- 
  - `secure` - **Boolean** Flag for using cookie over TLS/SSL *(default "false")*
- 
  - `signed` - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value *(default "false")*
 
 `dictionary` object with correct value to be added, otherwise using a default dictionary inside ./lib/dictionary.js
