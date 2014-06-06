@@ -16,7 +16,7 @@ git clone git://github.com/hex7c0/browser-language.git
 
 ## API
 
-_Clear_ use inside expressjs project
+_Normal_ use inside expressjs project
 ```js
 var language = require('browser-language');
 var app = require('express')();
@@ -56,15 +56,22 @@ app.use(language({
   - `en` - **String** Set cookie with 'en' value
   - `it` - **String** Set cookie with 'it' value
   - `..` - **String** Set cookie with '..' value
- - `domain` - **String** Domain of cookie
- - `cookie` - **String** Name of cookie
- - `path` - **String** Path of cookie
- - `age` - **Integer** Age of cookie
- - `httpOnly` - **Boolean** Flag for http only
- - `secure` - **Boolean** Flag for using https
- - `signed` - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value
+ 
+ - `domain` - **String** Domain of cookie *(default "null")*
+ 
+ - `cookie` - **String** Name of cookie *(default "lang")*
+ 
+ - `path` - **String** Path of cookie *(default "/")*
+ 
+ - `age` - **Number** Age of cookie in millisecond *(default "1 year")*
+ 
+ - `httpOnly` - **Boolean** Flag for http only cookie *(default "false")*
+ 
+ - `secure` - **Boolean** Flag for using cookie over TLS/SSL *(default "false")*
+ 
+ - `signed` - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value *(default "false")*
 
-`dictionary` object with correct value to be added, otherwise using a default dictionary inside /lib/dictionary.js
+`dictionary` object with correct value to be added, otherwise using a default dictionary inside ./lib/dictionary.js
 
 #### Examples
 
