@@ -21,12 +21,13 @@
     "express": ">4.4.0"
   },
   "engines": {
-    "node": ">=0.8.X"
+    "node": ">0.8.0"
   },
   "keywords": [
     "browser",
     "language",
-    "cookie"
+    "cookie",
+    "i18n
   ],
   "license": "GPLv3",
   "homepage": "https://github.com/hex7c0/browser-language"
