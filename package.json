@@ -1,6 +1,6 @@
 {
   "name": "browser-language",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "grab browser language and store on cookie",
   "main": "index.js",
   "repository": {
@@ -27,7 +27,7 @@
     "browser",
     "language",
     "cookie",
-    "i18n
+    "i18n"
   ],
   "license": "GPLv3",
   "homepage": "https://github.com/hex7c0/browser-language"
