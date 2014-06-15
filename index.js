@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.0.6
+ * @version 1.0.7
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -214,10 +214,10 @@ function signed(req,res,next) {
  * 
  * @exports main
  * @function main
- * @param {Object} options: various options. check README.md
+ * @param {Object} options - various options. Check README.md
  * @return {Function}
  */
-var main = module.exports = function(options) {
+module.exports = function(options) {
 
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
@@ -225,7 +225,7 @@ var main = module.exports = function(options) {
 
     my = {
         cookie: String(options.cookie || 'lang'),
-        domain: options.domain || null,
+        domain: String(options.domain || ''),
         path: String(options.path || '/'),
         age: Number(options.age) || 1000 * 3600 * 24 * 365,
         httpOnly: Boolean(options.httpOnly),
@@ -247,9 +247,8 @@ var main = module.exports = function(options) {
         // remove obsolete
         normal = languageAll = null;
         return signed;
-    } else {
-        // remove obsolete
-        signed = languageAll = null;
-        return normal;
     }
+    // remove obsolete
+    signed = languageAll = null;
+    return normal;
 };

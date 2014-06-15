@@ -9,7 +9,7 @@
  * @license GPLv3
  */
 
-/**
+/*
  * initialize module
  */
 // import
@@ -18,7 +18,7 @@ try {
     var app = require('express')();
     var cookie = require('cookie-parser');
 } catch (MODULE_NOT_FOUND) {
-    console.log(MODULE_NOT_FOUND);
+    console.error(MODULE_NOT_FOUND);
     process.exit(1);
 }
 

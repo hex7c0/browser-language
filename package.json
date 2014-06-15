@@ -1,6 +1,6 @@
 {
   "name": "browser-language",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "grab browser language and store on cookie",
   "main": "index.js",
   "repository": {
@@ -17,7 +17,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "cookie-parser": "1.1.0",
     "express": ">4.4.0"
   },
   "engines": {
