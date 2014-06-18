@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.0.7
+ * @version 1.0.8
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -13,7 +13,8 @@
 /*
  * initialize module
  */
-var my = {}, LANG = {}, languageAll = {
+var my = null, LANG = null;
+var all = {
     'ab': 'Abkhazian',
     'af': 'Afrikaans',
     'an': 'Aragonese',
@@ -157,21 +158,36 @@ function normal(req,res,next) {
     }
     if (req.cookies[my.cookie] == undefined) { // check
         if (req.headers['accept-language']) {
-            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
-                    ';');
-            for (var i = 0, il = languagesTyp.length; i < il; i++) {
-                var language = languagesTyp[i].substring(0,2);
-                if (lang[language]) {
-                    req.cookies[my.cookie] = set(res,my,language,false);
-                    return next();
+            // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+            var optional = req.headers['accept-language'].match(/([a-zA-z]{2,2})/g);
+            var language = optional.filter(function(elem,pos,self) {
+
+                return self.indexOf(elem.toLowerCase()) == pos;
+            })
+            for (var i = 0, il = optional.length; i < il; i++) {
+                if (lang[language[i]]) {
+                    req.cookies[my.cookie] = set(res,my,language[i],false);
+                    try {
+                        return next();
+                    } catch (TypeError) {
+                        return;
+                    }
                 }
             }
         }
     } else if (lang[req.cookies[my.cookie]]) { // lookup
-        return next();
+        try {
+            return next();
+        } catch (TypeError) {
+            return;
+        }
     }
     req.cookies[my.cookie] = set(res,my,lang._default,false);
-    return next();
+    try {
+        return next();
+    } catch (TypeError) {
+        return;
+    }
 }
 /**
  * detect language and (if accepted) build it. Store information on signed cookie
@@ -193,21 +209,36 @@ function signed(req,res,next) {
     }
     if (req.signedCookies[my.cookie] == undefined) { // check
         if (req.headers['accept-language']) {
-            var languagesTyp = req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(
-                    ';');
-            for (var i = 0, il = languagesTyp.length; i < il; i++) {
-                var language = languagesTyp[i].substring(0,2);
-                if (lang[language]) {
-                    req.signedCookies[my.cookie] = set(res,my,language,true);
-                    return next();
+            // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+            var optional = req.headers['accept-language'].match(/([a-zA-z]{2,2})/g);
+            var language = optional.filter(function(elem,pos,self) {
+
+                return self.indexOf(elem.toLowerCase()) == pos;
+            })
+            for (var i = 0, il = optional.length; i < il; i++) {
+                if (lang[language[i]]) {
+                    req.signedCookies[my.cookie] = set(res,my,language[i],true);
+                    try {
+                        return next();
+                    } catch (TypeError) {
+                        return;
+                    }
                 }
             }
         }
     } else if (lang[req.signedCookies[my.cookie]]) { // lookup
-        return next();
+        try {
+            return next();
+        } catch (TypeError) {
+            return;
+        }
     }
     req.signedCookies[my.cookie] = set(res,my,lang._default,true);
-    return next();
+    try {
+        return next();
+    } catch (TypeError) {
+        return;
+    }
 }
 /**
  * setting options
@@ -222,7 +253,6 @@ module.exports = function(options) {
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
     var lang = options.dictionary || require(include).LANG;
-
     my = {
         cookie: String(options.cookie || 'lang'),
         domain: String(options.domain || ''),
@@ -233,7 +263,7 @@ module.exports = function(options) {
     }
     if (lang._default == undefined) {
         lang = require(include).LANG;
-    } else if (!languageAll[lang._default]) {
+    } else if (!all[lang._default]) {
         console.error('language misconfigured');
         lang = require(include).LANG;
     }
@@ -242,13 +272,10 @@ module.exports = function(options) {
      */
     process.env.lang = lang._default;
     LANG = lang;
-
     if (Boolean(options.signed)) {
-        // remove obsolete
-        normal = languageAll = null;
+        normal = all = null;
         return signed;
     }
-    // remove obsolete
-    signed = languageAll = null;
+    signed = all = null;
     return normal;
 };
