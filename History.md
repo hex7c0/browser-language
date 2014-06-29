@@ -1,7 +1,9 @@
-v1.0.9 / 2014-06-29
+v1.0.10 / 2014-06-29
 ==================
 
   * Remove anonymous function
+  * Update [`express`](https://github.com/visionmedia/express) @ 4.4.5
+  * Update [`cookie-parser`] @ 1.3.2
 
 1.0.8 / 2014-06-18
 ==================
