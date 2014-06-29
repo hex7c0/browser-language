@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.0.8
+ * @version 1.0.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -159,7 +159,8 @@ function normal(req,res,next) {
     if (req.cookies[my.cookie] == undefined) { // check
         if (req.headers['accept-language']) {
             // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-            var optional = req.headers['accept-language'].match(/([a-zA-z]{2,2})/g);
+            var optional = req.headers['accept-language']
+                    .match(/([a-zA-z]{2,2})/g);
             var language = optional.filter(function(elem,pos,self) {
 
                 return self.indexOf(elem.toLowerCase()) == pos;
@@ -210,7 +211,8 @@ function signed(req,res,next) {
     if (req.signedCookies[my.cookie] == undefined) { // check
         if (req.headers['accept-language']) {
             // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-            var optional = req.headers['accept-language'].match(/([a-zA-z]{2,2})/g);
+            var optional = req.headers['accept-language']
+                    .match(/([a-zA-z]{2,2})/g);
             var language = optional.filter(function(elem,pos,self) {
 
                 return self.indexOf(elem.toLowerCase()) == pos;
@@ -243,12 +245,12 @@ function signed(req,res,next) {
 /**
  * setting options
  * 
- * @exports main
- * @function main
+ * @exports language
+ * @function language
  * @param {Object} options - various options. Check README.md
  * @return {Function}
  */
-module.exports = function(options) {
+module.exports = function language(options) {
 
     var include = __dirname + '/lib/dictionary.js';
     var options = options || {};
