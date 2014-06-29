@@ -1,6 +1,6 @@
 {
   "name": "browser-language",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "grab browser language and store on cookie",
   "main": "index.js",
   "repository": {
