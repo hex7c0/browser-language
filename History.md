@@ -1,3 +1,8 @@
+v1.0.11 / 2014-07-20
+==================
+
+  * Slightly faster performance (global var, RegExp)
+
 v1.0.10 / 2014-06-29
 ==================
 

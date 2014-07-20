@@ -56,7 +56,6 @@ app.use(language({
   - `en` - **String** Set cookie with 'en' value
   - `it` - **String** Set cookie with 'it' value
   - `..` - **String** Set cookie with '..' value
- 
  - `domain` - **String** Domain of cookie *(default "null")*
  - `cookie` - **String** Name of cookie *(default "lang")*
  - `path` - **String** Path of cookie *(default "/")*
