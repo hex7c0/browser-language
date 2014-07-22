@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.0.11
+ * @version 1.0.12
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -274,9 +274,7 @@ module.exports = function language(options) {
     process.env.lang = lang._default;
     LANG = lang;
     if (Boolean(options.signed)) {
-        normal = all = null;
         return signed;
     }
-    signed = all = null;
     return normal;
 };
