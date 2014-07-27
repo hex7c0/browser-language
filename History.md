@@ -1,3 +1,12 @@
+v1.2.0 / 2014-07-27
+==================
+
+  * Using task runner `grunt`
+  * Using test framework `mocha`
+  * Testing script will be put inside 'test/'
+  * '.npmignore' more aggressive
+  * `uglify` compiles
+
 v1.1.0 / 2014-07-25
 ==================
 
