@@ -29,10 +29,18 @@ try {
  */
 describe('normal',function() {
 
-    app.use(cookie('foo'));
-    app.use(language({
-        cookie: 'new_cookie_name',
-    }));
+    before(function(done) {
+
+        app.use(cookie('foo'));
+        app.use(language({
+            cookie: 'new_cookie_name',
+        }));
+        app.get('/',function(req,res) {
+
+            res.send('hello world!');
+        });
+        done();
+    });
 
     it('nothing - should return "en" cookie',function(done) {
 
