@@ -1,3 +1,7 @@
+.git*
+.project
+.settings
+.travis.xml
+.DS_Store
 examples/
 test/
-.travis.yml
