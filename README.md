@@ -25,15 +25,8 @@ _Normal_ use inside expressjs project
 var language = require('browser-language');
 var app = require('express')();
 
-app.use(language({
-    dictionary: {
-        _default: 'en',
-        en: 'en',
-    },
-    cookie: 'new_cookie_name',
-}));
+app.use(language());
 ```
-
 _Signed_ use inside expressjs project
 ```js
 var language = require('browser-language');
@@ -44,10 +37,10 @@ app.use(cookie('foo'));
 app.use(language({
     dictionary: {
         _default: 'en',
-        en: 'en',
+        en: 'en'
     },
     cookie: 'new_cookie_name',
-    signed: true,
+    signed: true
 }));
 ```
 

@@ -29,6 +29,10 @@ module.exports = function(grunt) {
                     src: 'lib/*.js',
                     dest: 'min'
                 },{
+                    expand: true,
+                    src: 'module/*.js',
+                    dest: 'min'
+                },{
                     'index.min.js': 'index.js'
                 }]
             }
@@ -36,7 +40,6 @@ module.exports = function(grunt) {
 
     });
 
-    // These plugins provide necessary tasks.
     require('load-grunt-tasks')(grunt,{
         scope: 'devDependencies'
     });
