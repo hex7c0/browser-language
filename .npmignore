@@ -4,5 +4,8 @@
 .travis.xml
 .DS_Store
 index.js
+Gruntfile.js
 examples/
+lib/
+module/
 test/
