@@ -163,7 +163,7 @@ function end(next) {
 module.exports = function language(options) {
 
     var options = options || Object.create(null);
-    var include = __dirname + '/lib/dictionary.js';
+    var include = __dirname + '/min/lib/dictionary.js';
     var lang = options.dictionary || require(include).LANG;
     var my = {
         cookie: String(options.cookie || 'lang'),

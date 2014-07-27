@@ -18,17 +18,22 @@ module.exports = function(grunt) {
                 + ' * (c) <%= pkg.author.name %> <%= pkg.homepage %>\n'
                 + ' * Licensed under <%= pkg.license %>\n' + ' */\n',
 
-        clean: ['index.min.js'],
+        clean: ['index.min.js','min/**/*.js'],
 
         uglify: {
             options: {
                 preserveComments: 'false',
                 banner: '<%= banner %>',
             },
-            files: {
-                src: 'index.js',
-                dest: 'index.min.js'
-            },
+            target: {
+                files: [{
+                    expand: true,
+                    src: 'lib/*.js',
+                    dest: 'min'
+                },{
+                    'index.min.js': 'index.js'
+                }]
+            }
         },
 
     });
