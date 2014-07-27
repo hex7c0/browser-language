@@ -14,7 +14,7 @@
  */
 // import
 try {
-    var language = require('../index.js'); // use require('browser-language') instead
+    var language = require('../index.min.js'); // use require('browser-language') instead
     var app = require('express')();
     var cookie = require('cookie-parser');
 } catch (MODULE_NOT_FOUND) {

@@ -1,6 +1,10 @@
-#browser-language [![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language) [![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
+# [browser-language](https://github.com/hex7c0/browser-language)
+[![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
+[![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language)
+[![devDependency Status](https://david-dm.org/hex7c0/browser-language/dev-status.svg)](https://david-dm.org/hex7c0/browser-language#info=devDependencies)
 
-grab browser language and store on cookie for [nodejs](http://nodejs.org)
+Grab browser language and store min value on cookie for [nodejs](http://nodejs.org).
+If `browser['Accept-Language'] = it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4`, store `it` on cookie, otherwise, if language is not available, store default language `en`
 
 ## Installation
 
@@ -49,7 +53,7 @@ app.use(language({
 
 ### language(options)
 
-#### Options
+#### options
 
  - `dictionary` - **Object** Accepted language
   - `_default` - **String** The dafault value, if request from client cannot be evaluated
@@ -64,7 +68,7 @@ app.use(language({
  - `secure` - **Boolean** Flag for using cookie over TLS/SSL *(default "false")*
  - `signed` - **Boolean** Will use the secret passed to cookieParser(secret) to sign the value *(default "false")*
 
-`dictionary` object with correct value to be added, otherwise using a default dictionary inside ./lib/dictionary.js
+`dictionary` object with correct value to be added, otherwise using a default dictionary inside *./lib/dictionary.js*
 
 #### Examples
 
