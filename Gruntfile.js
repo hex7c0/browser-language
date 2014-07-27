@@ -1,8 +1,6 @@
 "use strict";
 /**
- * @file browser-language grunt
- * @module browser-language
- * @package browser-language
+ * @file gruntfile
  * @subpackage main
  * @version 0.0.1
  * @author hex7c0 <hex7c0@gmail.com>
