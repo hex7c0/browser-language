@@ -3,5 +3,6 @@
 .settings
 .travis.xml
 .DS_Store
+index.js
 examples/
 test/
