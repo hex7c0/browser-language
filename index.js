@@ -4,10 +4,10 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.1.0
+ * @version 1.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
- * @license GPLv3
+ * @license GPLv3 https://www.npmjs.org/package/browser-language
  */
 
 /*
@@ -123,20 +123,18 @@ var all = {
  * @param {Object} res - response to client
  * @param {String} lang - string for cookie
  * @param {Boolean} signed - if cookie'll be signed
- * @return {String}
+ * @return {lang}
  */
 function set(my,res,lang,signed) {
 
-    var opt = my;
-    res.cookie(opt.cookie,lang,{
-        domain: opt.domain,
-        path: opt.path,
-        maxAge: opt.age,
-        httpOnly: opt.httpOnly,
-        secure: opt.secure,
-        signed: signed,
-    });
-    return lang;
+    return res.cookie(my.cookie,lang,{
+        domain: my.domain,
+        path: my.path,
+        maxAge: my.age,
+        httpOnly: my.httpOnly,
+        secure: my.secure,
+        signed: signed
+    }),lang;
 }
 
 /**
@@ -173,8 +171,8 @@ module.exports = function language(options) {
         path: String(options.path || '/'),
         age: Number(options.age) || 1000 * 3600 * 24 * 365,
         httpOnly: Boolean(options.httpOnly),
-        secure: Boolean(options.secure),
-    }
+        secure: Boolean(options.secure)
+    };
 
     if (lang._default == undefined) {
         lang = require(include).LANG;
@@ -186,7 +184,6 @@ module.exports = function language(options) {
      * @global
      */
     process.env.lang = lang._default;
-    var LANG = lang;
 
     // return
     if (Boolean(options.signed)) {
@@ -201,36 +198,33 @@ module.exports = function language(options) {
          */
         return function signed(req,res,next) {
 
-            var lang = LANG;
-            var opt = my;
             if (req.signedCookies == undefined) {
-                req.signedCookies = {};
+                req.signedCookies = Object.create(null);
                 /**
                  * @todo req.headers.cookie
                  */
             }
-            if (req.signedCookies[opt.cookie] == undefined) { // check
-                if (req.headers['accept-language']) {
-                    // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-                    var optional = req.headers['accept-language']
-                            .match(/([a-z]{2,2})/ig);
-                    // remove duplicate
-                    var language = optional.filter(function(elem,pos,self) {
+            if (req.signedCookies[my.cookie] == undefined
+                    && req.headers['accept-language']) { // check
+                // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+                var optional = req.headers['accept-language']
+                        .match(/([a-z]{2,2})/ig);
+                // remove duplicate
+                var language = optional.filter(function(elem,pos,self) {
 
-                        return self.indexOf(elem.toLowerCase()) == pos;
-                    })
-                    for (var i = 0, ii = language.length; i < ii; i++) {
-                        if (lang[language[i]]) {
-                            req.signedCookies[opt.cookie] = set(opt,res,
-                                    language[i],true);
-                            return end(next);
-                        }
+                    return self.indexOf(elem.toLowerCase()) == pos;
+                })
+                for (var i = 0, ii = language.length; i < ii; i++) {
+                    if (lang[language[i]]) {
+                        req.signedCookies[my.cookie] = set(my,res,language[i],
+                                true);
+                        return end(next);
                     }
                 }
-            } else if (lang[req.signedCookies[opt.cookie]]) { // lookup
+            } else if (lang[req.signedCookies[my.cookie]]) { // lookup
                 return end(next);
             }
-            req.signedCookies[opt.cookie] = set(opt,res,lang._default,true);
+            req.signedCookies[my.cookie] = set(my,res,lang._default,true);
             return end(next);
         }
     }
@@ -246,35 +240,32 @@ module.exports = function language(options) {
      */
     return function normal(req,res,next) {
 
-        var lang = LANG;
-        var opt = my;
         if (req.cookies == undefined) {
-            req.cookies = {};
+            req.cookies = Object.create(null);
             /**
              * @todo req.headers.cookie
              */
         }
-        if (req.cookies[opt.cookie] == undefined) { // check
-            if (req.headers['accept-language']) {
-                // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-                var optional = req.headers['accept-language']
-                        .match(/([a-z]{2,2})/ig);
-                // remove duplicate
-                var language = optional.filter(function(elem,pos,self) {
+        if (req.cookies[my.cookie] == undefined
+                && req.headers['accept-language']) { // check
+            // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
+            var optional = req.headers['accept-language']
+                    .match(/([a-z]{2,2})/ig);
+            // remove duplicate
+            var language = optional.filter(function(elem,pos,self) {
 
-                    return self.indexOf(elem.toLowerCase()) == pos;
-                })
-                for (var i = 0, ii = language.length; i < ii; i++) {
-                    if (lang[language[i]]) {
-                        req.cookies[opt.cookie] = set(opt,res,language[i],false);
-                        return end(next);
-                    }
+                return self.indexOf(elem.toLowerCase()) == pos;
+            })
+            for (var i = 0, ii = language.length; i < ii; i++) {
+                if (lang[language[i]]) {
+                    req.cookies[my.cookie] = set(my,res,language[i],false);
+                    return end(next);
                 }
             }
-        } else if (lang[req.cookies[opt.cookie]]) { // lookup
+        } else if (lang[req.cookies[my.cookie]]) { // lookup
             return end(next);
         }
-        req.cookies[opt.cookie] = set(opt,res,lang._default,false);
+        req.cookies[my.cookie] = set(my,res,lang._default,false);
         return end(next);
     }
 };
