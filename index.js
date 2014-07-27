@@ -4,10 +4,10 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.1.0
+ * @version 1.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
- * @license GPLv3
+ * @license GPLv3 https://www.npmjs.org/package/browser-language
  */
 
 /*
@@ -123,20 +123,18 @@ var all = {
  * @param {Object} res - response to client
  * @param {String} lang - string for cookie
  * @param {Boolean} signed - if cookie'll be signed
- * @return {String}
+ * @return {lang}
  */
 function set(my,res,lang,signed) {
 
-    var opt = my;
-    res.cookie(opt.cookie,lang,{
-        domain: opt.domain,
-        path: opt.path,
-        maxAge: opt.age,
-        httpOnly: opt.httpOnly,
-        secure: opt.secure,
-        signed: signed,
-    });
-    return lang;
+    return res.cookie(my.cookie,lang,{
+        domain: my.domain,
+        path: my.path,
+        maxAge: my.age,
+        httpOnly: my.httpOnly,
+        secure: my.secure,
+        signed: signed
+    }),lang;
 }
 
 /**
@@ -173,8 +171,8 @@ module.exports = function language(options) {
         path: String(options.path || '/'),
         age: Number(options.age) || 1000 * 3600 * 24 * 365,
         httpOnly: Boolean(options.httpOnly),
-        secure: Boolean(options.secure),
-    }
+        secure: Boolean(options.secure)
+    };
 
     if (lang._default == undefined) {
         lang = require(include).LANG;
