@@ -194,7 +194,6 @@ module.exports = function language(options) {
          * @param {Object} req - client request
          * @param {Object} res - response to client
          * @param {next} next - continue routes
-         * @return
          */
         return function signed(req,res,next) {
 
@@ -236,7 +235,6 @@ module.exports = function language(options) {
      * @param {Object} req - client request
      * @param {Object} res - response to client
      * @param {next} [next] - continue routes
-     * @return
      */
     return function normal(req,res,next) {
 
