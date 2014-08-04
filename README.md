@@ -17,6 +17,10 @@ or
 ```
 git clone git://github.com/hex7c0/browser-language.git
 ```
+or
+```
+http://supergiovane.tk/#/browser-language
+```
 
 ## API
 
