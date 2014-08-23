@@ -1,5 +1,5 @@
 /*
- * browser-language v1.2.4
+ * browser-language v1.2.5
  * (c) hex7c0 http://supergiovane.tk/#/browser-language
  * Licensed under GPLv3
  */
