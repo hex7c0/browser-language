@@ -2,7 +2,7 @@
 
 [![NPM version](https://badge.fury.io/js/browser-language.svg)](http://badge.fury.io/js/browser-language)
 [![Build Status](https://travis-ci.org/hex7c0/browser-language.svg?branch=master)](https://travis-ci.org/hex7c0/browser-language)
-[![devDependency Status](https://david-dm.org/hex7c0/browser-language/dev-status.svg)](https://david-dm.org/hex7c0/browser-language#info=devDependencies)
+[![Dependency Status](https://david-dm.org/hex7c0/browser-language/status.svg)](https://david-dm.org/hex7c0/browser-language)
 
 Grab browser language and store min value on cookie for [nodejs](http://nodejs.org).
 If `browser['Accept-Language'] = it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4`, store `it` on cookie, otherwise, if language is not available, store default language `en`
