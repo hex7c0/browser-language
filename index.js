@@ -145,11 +145,10 @@ function set(my, res, lang, signed) {
  */
 function end(next) {
 
-    try {
+    if (next) {
         return next();
-    } catch (TypeError) {
-        return;
     }
+    return;
 }
 
 /**
