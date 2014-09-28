@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.2.5
+ * @version 1.2.8
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -122,10 +122,9 @@ var all = {
  * @param {Object} my - user option
  * @param {Object} res - response to client
  * @param {String} lang - string for cookie
- * @param {Boolean} signed - if cookie'll be signed
- * @return {lang}
+ * @return {String}
  */
-function set(my, res, lang, signed) {
+function set(my, res, lang) {
 
     return res.cookie(my.cookie, lang, {
         domain: my.domain,
@@ -133,7 +132,7 @@ function set(my, res, lang, signed) {
         maxAge: my.age,
         httpOnly: my.httpOnly,
         secure: my.secure,
-        signed: signed
+        signed: my.signed
     }), lang;
 }
 
@@ -170,7 +169,8 @@ module.exports = function language(options) {
         path: String(options.path || '/'),
         age: Number(options.age) || 1000 * 3600 * 24 * 365,
         httpOnly: Boolean(options.httpOnly),
-        secure: Boolean(options.secure)
+        secure: Boolean(options.secure),
+        signed: Boolean(options.signed)
     };
 
     if (lang._default == undefined) {
@@ -185,88 +185,46 @@ module.exports = function language(options) {
     process.env.lang = lang._default;
 
     // return
-    if (Boolean(options.signed)) {
-        /**
-         * detect language and (if accepted) build it. Store information on
-         * signed cookie
-         * 
-         * @function signed
-         * @param {Object} req - client request
-         * @param {Object} res - response to client
-         * @param {next} next - continue routes
-         */
-        return function signed(req, res, next) {
-
-            if (req.signedCookies === undefined) {
-                req.signedCookies = Object.create(null);
-                /**
-                 * @todo req.headers.cookie
-                 */
-            }
-            if (lang[req.signedCookies[my.cookie]]) { // lookup
-                return end(next);
-            }
-            if (req.signedCookies[my.cookie] === undefined
-                    && req.headers['accept-language']) { // check
-                // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-                var optional = req.headers['accept-language']
-                        .match(/([a-z]{2,2})/ig);
-                // remove duplicate
-                var language = optional.filter(function(elem, pos, self) {
-
-                    return self.indexOf(elem.toLowerCase()) === pos;
-                })
-                for (var i = 0, ii = language.length; i < ii; i++) {
-                    if (lang[language[i]]) {
-                        req.signedCookies[my.cookie] = set(my, res,
-                                language[i], true);
-                        return end(next);
-                    }
-                }
-            }
-            req.signedCookies[my.cookie] = set(my, res, lang._default, true);
-            return end(next);
-        }
+    var cookie = 'cookies'
+    if (my.signed) {
+        cookie = 'signedCookies'
     }
 
     /**
-     * detect language and (if accepted) build it. Store information on normal
-     * cookie
+     * detect language and (if accepted) build it. Store information on cookie
      * 
-     * @function normal
+     * @function browser
      * @param {Object} req - client request
      * @param {Object} res - response to client
-     * @param {next} [next] - continue routes
+     * @param {next} next - continue routes
      */
-    return function normal(req, res, next) {
+    return function browser(req, res, next) {
 
-        if (req.cookies === undefined) {
-            req.cookies = Object.create(null);
+        var biscotto = req[cookie];
+        if (biscotto === undefined) {
+            biscotto = Object.create(null);
             /**
              * @todo req.headers.cookie
              */
-        }
-        if (lang[req.cookies[my.cookie]]) { // lookup
+        } else if (lang[biscotto[my.cookie]]) { // lookup
             return end(next);
         }
-        if (req.cookies[my.cookie] === undefined
-                && req.headers['accept-language']) { // check
-            // req.headers['accept-language'].replace(/q=[0-9.]*[,]?/g,'').split(';');
-            var optional = req.headers['accept-language']
-                    .match(/([a-z]{2,2})/ig);
+        var ll = lang._default, search
+        if (search = req.headers['accept-language']) { // check
+            var language = search.match(/([a-z]{2,2})/ig);
             // remove duplicate
-            var language = optional.filter(function(elem, pos, self) {
+            language = language.filter(function(elem, pos, self) {
 
                 return self.indexOf(elem.toLowerCase()) === pos;
             })
             for (var i = 0, ii = language.length; i < ii; i++) {
-                if (lang[language[i]]) {
-                    req.cookies[my.cookie] = set(my, res, language[i], false);
-                    return end(next);
+                if (search = lang[language[i]]) {
+                    ll = search
+                    break
                 }
             }
         }
-        req.cookies[my.cookie] = set(my, res, lang._default, false);
+        biscotto[my.cookie] = set(my, res, ll);
         return end(next);
     }
 };
