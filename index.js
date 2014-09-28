@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.2.8
+ * @version 1.2.9
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -137,20 +137,6 @@ function set(my, res, lang) {
 }
 
 /**
- * end of work
- * 
- * @param {next} [next] - continue routes
- * @return {next}
- */
-function end(next) {
-
-    if (next) {
-        return next();
-    }
-    return;
-}
-
-/**
  * setting options
  * 
  * @exports language
@@ -207,7 +193,7 @@ module.exports = function language(options) {
              * @todo req.headers.cookie
              */
         } else if (lang[biscotto[my.cookie]]) { // lookup
-            return end(next);
+            return next();
         }
         var ll = lang._default, search
         if (search = req.headers['accept-language']) { // check
@@ -225,6 +211,6 @@ module.exports = function language(options) {
             }
         }
         biscotto[my.cookie] = set(my, res, ll);
-        return end(next);
+        return next();
     }
 };
