@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file browser-language main
  * @module browser-language
