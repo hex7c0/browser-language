@@ -4,7 +4,7 @@
  * @module browser-language
  * @package browser-language
  * @subpackage main
- * @version 1.2.9
+ * @version 1.2.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -141,12 +141,12 @@ function set(my, res, lang) {
  * 
  * @exports language
  * @function language
- * @param {Object} options - various options. Check README.md
+ * @param {Object} opt - various options. Check README.md
  * @return {Function}
  */
-module.exports = function language(options) {
+function language(opt) {
 
-    var options = options || Object.create(null);
+    var options = opt || Object.create(null);
     var include = __dirname + '/min/lib/dictionary.js';
     var lang = options.dictionary || require(include).LANG;
     var my = {
@@ -159,7 +159,7 @@ module.exports = function language(options) {
         signed: Boolean(options.signed)
     };
 
-    if (lang._default == undefined) {
+    if (lang._default === undefined) {
         lang = require(include).LANG;
     } else if (!all[lang._default]) {
         console.error('language misconfigured');
@@ -171,9 +171,9 @@ module.exports = function language(options) {
     process.env.lang = lang._default;
 
     // return
-    var cookie = 'cookies'
+    var cookie = 'cookies';
     if (my.signed) {
-        cookie = 'signedCookies'
+        cookie = 'signedCookies';
     }
 
     /**
@@ -195,22 +195,25 @@ module.exports = function language(options) {
         } else if (lang[biscotto[my.cookie]]) { // lookup
             return next();
         }
-        var ll = lang._default, search
-        if (search = req.headers['accept-language']) { // check
+        var ll = lang._default;
+        var search = req.headers['accept-language'];
+        if (search) { // check
             var language = search.match(/([a-z]{2,2})/ig);
             // remove duplicate
             language = language.filter(function(elem, pos, self) {
 
                 return self.indexOf(elem.toLowerCase()) === pos;
-            })
+            });
             for (var i = 0, ii = language.length; i < ii; i++) {
-                if (search = lang[language[i]]) {
-                    ll = search
-                    break
+                search = lang[language[i]];
+                if (search) {
+                    ll = search;
+                    break;
                 }
             }
         }
         biscotto[my.cookie] = set(my, res, ll);
         return next();
-    }
-};
+    };
+}
+module.exports = language;
