@@ -4,6 +4,7 @@
 [![Linux Status](https://img.shields.io/travis/hex7c0/browser-language.svg?label=linux)](https://travis-ci.org/hex7c0/browser-language)
 [![Windows Status](https://img.shields.io/appveyor/ci/hex7c0/browser-language.svg?label=windows)](https://ci.appveyor.com/project/hex7c0/browser-language)
 [![Dependency Status](https://img.shields.io/david/hex7c0/browser-language.svg)](https://david-dm.org/hex7c0/browser-language)
+[![Coveralls](https://img.shields.io/coveralls/hex7c0/browser-language.svg)](https://coveralls.io/r/hex7c0/browser-language)
 
 Grab browser language and store min value on cookie for [nodejs](http://nodejs.org).
 If `browser['Accept-Language'] = it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4`, store `it` on cookie, otherwise, if language is not available, store default language `en`
