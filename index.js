@@ -3,7 +3,7 @@
  * @file browser-language main
  * @module browser-language
  * @subpackage main
- * @version 1.3.0
+ * @version 1.4.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -12,6 +12,7 @@
 /*
  * initialize module
  */
+var headerRegex = /([a-z]{2})/ig;
 var all = {
   'ab': 'Abkhazian',
   'af': 'Afrikaans',
@@ -136,6 +137,35 @@ function set(my, res, lang) {
 }
 
 /**
+ * detect browser language
+ * 
+ * @param {String} ll - default language as fallback
+ * @param {String} header - accept-language header
+ * @param {Object} lang - languages dictionary
+ * @returns {String}
+ */
+function detect(ll, header, lang) {
+
+  if (header) { // check
+    var language = header.match(headerRegex); // grep languages header
+
+    language = language.filter(function(elem, pos, self) { // remove duplicate
+
+      return self.indexOf(elem.toLowerCase()) === pos;
+    });
+
+    var tmp;
+    for (var i = 0, ii = language.length; i < ii; ++i) { // detect righ language
+      if ((tmp = lang[language[i]])) {
+        return tmp;
+      }
+    }
+
+  }
+  return ll; // return default
+}
+
+/**
  * setting options
  * 
  * @exports language
@@ -168,11 +198,54 @@ function language(opt) {
    * @global
    */
   process.env.lang = lang._default;
-
   // return
   var cookie = 'cookies';
   if (my.signed) {
     cookie = 'signedCookies';
+  }
+
+  if (typeof options.encryptionSecret === 'string') {
+    var vault = require('cookie-encryption');
+    var encryptionOptions = opt.encryptionOptions || Object.create(null);
+    vault = vault(options.encryptionSecret, {
+      cookie: my.cookie,
+      cipher: encryptionOptions.cipher,
+      encoding: encryptionOptions.encoding,
+      extra: encryptionOptions.extra,
+      domain: encryptionOptions.domain || my.domain,
+      path: encryptionOptions.path || my.path,
+      maxAge: encryptionOptions.maxAge || my.maxAge,
+      httpOnly: encryptionOptions.httpOnly || my.httpOnly,
+      secure: encryptionOptions.secure || my.secure,
+      signed: encryptionOptions.signed || my.signed
+    });
+
+    /**
+     * detect language and (if accepted) build it. Store information on cookie
+     * 
+     * @function browser
+     * @param {Object} req - client request
+     * @param {Object} res - response to client
+     * @param {next} next - continue routes
+     */
+    return function browser(req, res, next) {
+
+      var biscotto;
+      try {
+        biscotto = vault.read(req);
+      } catch (e) { // fails to decrpy
+        biscotto = undefined;
+      }
+      if (biscotto && lang[biscotto]) { // lookup
+        req[cookie][my.cookie] = biscotto;
+        return next();
+      }
+
+      var ll = detect(lang._default, req.headers['accept-language'], lang);
+      req[cookie][my.cookie] = vault.write(req, ll); // populate req[cookie] by module
+
+      return next();
+    };
   }
 
   /**
@@ -192,26 +265,9 @@ function language(opt) {
       return next();
     }
 
-    var ll = lang._default;
-    var search = req.headers['accept-language'];
-    if (search) { // check
-      var language = search.match(/([a-z]{2,2})/ig); // grep languages header
-
-      language = language.filter(function(elem, pos, self) { // remove duplicate
-
-        return self.indexOf(elem.toLowerCase()) === pos;
-      });
-
-      for (var i = 0, ii = language.length; i < ii; ++i) {
-        search = lang[language[i]];
-        if (search) {
-          ll = search;
-          break;
-        }
-      }
-
-    }
+    var ll = detect(lang._default, req.headers['accept-language'], lang);
     biscotto[my.cookie] = set(my, res, ll);
+
     return next();
   };
 }
