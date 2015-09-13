@@ -1,3 +1,11 @@
+v1.4.0 / 2015-09-13
+==================
+
+  * Rename cookie option `age` to `maxAge`
+  * Add `encryptionSecret` (options)
+  * Add `encryptionOptions` (options)
+  * Install `cookie-encryption`@1.4.0
+
 v1.3.0 / 2015-08-08
 ==================
 
