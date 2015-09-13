@@ -1,6 +1,6 @@
 'use strict';
 /**
- * @file normal example
+ * @file signed example
  * @module browser-language
  * @subpackage examples
  * @version 0.0.2
@@ -18,9 +18,10 @@ var cookie = require('cookie-parser');
 app.use(cookie('foo')); // using for parsing header cookie
 
 app.use(language({
-  cookie: 'new_cookie_name', // set name of cookie
+  cookie: 'new_encrypt_cookie_name', // set name of cookie
+  encryptionSecret: 'ciao', // encrypt cookie with this secret
 })).get('/', function(req, res) {
 
   res.send('hello world!');
-}).listen(3000); // server starting
+}).listen(3000);// server starting
 console.log('starting "hello world" on port 3000');

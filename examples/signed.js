@@ -15,16 +15,13 @@ var language = require('..'); // use require('browser-language') instead
 var app = require('express')();
 var cookie = require('cookie-parser');
 
-// using middleware
-app.use(cookie('foo')); // using only for parsing header cookie
-app.use(language({
-  cookie: 'new_cookie_name',
-  signed: true
-}));
+app.use(cookie('foo')); // using for parsing header cookie
 
-// express routing
-app.get('/', function(req, res) {
+app.use(language({
+  cookie: 'new_signed_cookie_name', // set name of cookie
+  signed: true, // signed cookie
+})).get('/', function(req, res) {
 
   res.send('hello world!');
 }).listen(3000);// server starting
-app.console.log('starting "hello world" on port 3000');
+console.log('starting "hello world" on port 3000');
