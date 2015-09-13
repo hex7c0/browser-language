@@ -128,7 +128,7 @@ function set(my, res, lang) {
   return res.cookie(my.cookie, lang, {
     domain: my.domain,
     path: my.path,
-    maxAge: my.age,
+    maxAge: my.maxAge,
     httpOnly: my.httpOnly,
     secure: my.secure,
     signed: my.signed
@@ -152,7 +152,7 @@ function language(opt) {
     cookie: String(options.cookie || 'lang'),
     domain: String(options.domain || ''),
     path: String(options.path || '/'),
-    age: Number(options.age) || 1000 * 3600 * 24 * 365,
+    maxAge: Number(options.maxAge) || 1000 * 3600 * 24 * 365,
     httpOnly: Boolean(options.httpOnly),
     secure: Boolean(options.secure),
     signed: Boolean(options.signed)
@@ -191,15 +191,17 @@ function language(opt) {
     } else if (lang[biscotto[my.cookie]]) { // lookup
       return next();
     }
+
     var ll = lang._default;
     var search = req.headers['accept-language'];
     if (search) { // check
-      var language = search.match(/([a-z]{2,2})/ig);
-      // remove duplicate
-      language = language.filter(function(elem, pos, self) {
+      var language = search.match(/([a-z]{2,2})/ig); // grep languages header
+
+      language = language.filter(function(elem, pos, self) { // remove duplicate
 
         return self.indexOf(elem.toLowerCase()) === pos;
       });
+
       for (var i = 0, ii = language.length; i < ii; ++i) {
         search = lang[language[i]];
         if (search) {
@@ -207,6 +209,7 @@ function language(opt) {
           break;
         }
       }
+
     }
     biscotto[my.cookie] = set(my, res, ll);
     return next();

@@ -40,11 +40,11 @@ describe('options', function() {
   });
   it('day - should return "en" cookie for 1 day', function(done) {
 
-    var day = 1000 * 3600;
+    var day = 3600 * 1000;
     var app = express();
     app.use(cookie('foo')).use(language({
       cookie: 'new_cookie_name',
-      age: day
+      maxAge: day
     }));
     request(app).get('/').expect(200).end(function(err, res) {
 
