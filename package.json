@@ -28,7 +28,7 @@
   },
   "main": "index.min.js",
   "dependencies": {
-    "cookie-encryption": "1.4.0"
+    "cookie-encryption": "1.4.1"
   },
   "devDependencies": {
     "cookie-parser": "~1.4",
