@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.1",
   "name": "browser-language",
   "description": "grab browser language and store on cookie",
   "keywords": [

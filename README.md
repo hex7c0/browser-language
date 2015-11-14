@@ -1,4 +1,4 @@
-# [browser-language](http://supergiovane.tk/#/browser-language)
+# [browser-language](https://github.com/hex7c0/browser-language)
 
 [![NPM version](https://img.shields.io/npm/v/browser-language.svg)](https://www.npmjs.com/package/browser-language)
 [![Linux Status](https://img.shields.io/travis/hex7c0/browser-language.svg?label=linux)](https://travis-ci.org/hex7c0/browser-language)
