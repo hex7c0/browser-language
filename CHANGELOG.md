@@ -1,3 +1,9 @@
+v1.5.0 / 2016-09-12
+==================
+
+  * Tested against `node`@6
+  * Update `cookie-encryption`@1.5.0
+
 v1.4.2 / 2015-12-25
 ==================
 
@@ -7,7 +13,7 @@ v1.4.1 / 2015-11-14
 ==================
 
   * Update `cookie-encryption`@1.4.1
-  * Test `node`@5
+  * Tested against `node`@5
 
 v1.4.0 / 2015-09-13
 ==================
