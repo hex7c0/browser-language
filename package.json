@@ -29,7 +29,7 @@
   },
   "main": "index.min.js",
   "dependencies": {
-    "cookie-encryption": "1.5.0"
+    "cookie-encryption": "1.7.0"
   },
   "devDependencies": {
     "cookie-parser": "~1.4",
